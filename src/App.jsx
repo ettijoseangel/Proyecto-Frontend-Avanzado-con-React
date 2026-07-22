@@ -1,122 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { SendHorizontal } from "lucide-react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  // Solo conservamos el estado de los mensajes
+  const [messages, setMessages] = useState([]);
+
+  // Inicializamos React Hook Form
+  const { 
+    register, 
+    handleSubmit, 
+    reset, 
+    formState: { errors } 
+  } = useForm();
+
+  // Esta función es manejada por Hook Form y recibe los datos estructurados
+  const onSubmit = (data) => {
+    console.log("Enviando prompt:", data.prompt);
+    
+    // Lo agregamos a la pantalla temporalmente para ver que funciona
+    setMessages([...messages, { text: data.prompt, sender: "user" }]);
+    
+    // Hook Form limpia el input automáticamente con esto
+    reset(); 
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
+    <div className="flex flex-col h-screen w-full bg-gray-900 text-white justify-end">
+      
+      {/* Área de mensajes */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-2 flex flex-col">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`max-w-xs px-4 py-2 rounded-lg ${
+              msg.sender === "user"
+                ? "bg-blue-600 self-end"
+                : "bg-gray-700 self-start"
+            }`}
+          >
+            {msg.text}
+          </div>
+        ))}
+      </div>
+
+      {/* 
+        Cambiamos el <div> contenedor por un <form>.
+        Esto hace que al presionar 'Enter' se dispare onSubmit automáticamente.
+      */}
+      <form 
+        onSubmit={handleSubmit(onSubmit)} 
+        className="p-4 flex items-center bg-gray-800"
+      >
+        <input
+          type="text"
+          placeholder="Escribe un mensaje a Ollama..."
+          /* 
+            Si hay un error (ej. envían vacío), el borde se pone rojo.
+            Si no, se queda gris.
+          */
+          className={`flex-1 p-2 rounded-lg bg-gray-700 border ${
+            errors.prompt ? 'border-red-500' : 'border-gray-600'
+          } text-white focus:outline-none`}
+          
+          /* Aquí registramos el input en Hook Form y lo hacemos obligatorio */
+          {...register("prompt", { required: true })}
+        />
+        
+        {/* El botón ahora es de tipo submit */}
         <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+          type="submit"
+          className="ml-2 p-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Count is {count}
+          <SendHorizontal size={20} />
         </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      </form>
+    </div>
+  );
 }
-
-export default App
