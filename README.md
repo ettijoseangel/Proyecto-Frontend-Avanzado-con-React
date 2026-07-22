@@ -1,16 +1,34 @@
-# React + Vite
+# 🤖 ChatGPT Clone 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es un clon de la interfaz y funcionalidad de ChatGPT, desarrollado en React y dividido en 8 fases prácticas para dominar el manejo de estados, peticiones y diseño UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📍 Estado Actual: Parte 1 - Configuración Base (rama-1)
 
-## React Compiler
+### 🎯 Objetivo de esta fase
+Inicializar el entorno de trabajo con las configuraciones esenciales para el desarrollo del proyecto, asegurando una base sólida para el diseño de la interfaz y la captura de datos.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🛠️ Tecnologías y Herramientas implementadas
+*   **Vite + React:** Para un entorno de desarrollo ultrarrápido.
+*   **Tailwind CSS:** Para construir la interfaz de usuario directamente desde las clases, sin archivos CSS externos.
+*   **React Hook Form:** Para el manejo eficiente del input principal donde el usuario escribirá sus *prompts*, evitando re-renderizados innecesarios.
 
-## Expanding the ESLint configuration
+### 📝 Historial de Ramas
+- [x] **rama-1:** Setup inicial (Vite, Tailwind, Hook Form).
+- [ ] **rama-2:** *(Próximamente)*
+- [ ] **rama-3:** *(Próximamente)*
+- [ ] **rama-4:** *(Próximamente)*
+- [ ] **rama-5:** *(Próximamente)*
+- [ ] **rama-6:** *(Próximamente)*
+- [ ] **rama-7:** *(Próximamente)*
+- [ ] **rama-8:** *(Próximamente)*
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+### 🚀 Cómo correr el proyecto en esta rama
+
+1. Clona el repositorio.
+2. Posiciónate en la rama: `git checkout rama-1`
+3. Instala las dependencias: `npm install`
+4. Levanta el servidor: `npm run dev`
