@@ -6,20 +6,20 @@ Cada rama representa un módulo de aprendizaje independiente.
 
 ---
 
-## 📍 Estado Actual: Parte 1 - Formulario UI Base (rama-1)
+## 📍 Estado Actual: Parte 2 - Consumo de APIs y Ollama (parte-2)
 
 ### 🎯 Objetivo de esta fase
-Configurar el entorno inicial del proyecto y construir la interfaz básica del chat, aplicando técnicas de validación de formularios eficientes para evitar re-renderizados innecesarios en la captura del *prompt*.
+Desacoplar la lógica de conexión asíncrona creando un Custom Hook y consumir el servicio local de Inteligencia Artificial (Ollama) para recibir respuestas de DeepSeek R1 en tiempo real mediante *streaming*.
 
 ### 🛠️ Tecnologías y Herramientas implementadas
-*   **Vite + React:** Para la base del proyecto.
-*   **Tailwind CSS:** Para el diseño visual (modo oscuro y estructura de la caja de chat).
-*   **React Hook Form:** Manejo del estado del input principal y validación (evitando el envío de mensajes vacíos).
-*   **Lucide React:** Para la iconografía de la interfaz (`SendHorizontal`).
+*   **Ollama + DeepSeek R1:** Ejecución local del LLM (modelo de 1.5b) consumido a través de `http://localhost:11434`.
+*   **Custom Hooks:** Creación de `useOllamaHook.js` para abstraer la lógica de `fetch`, estado de carga (`loading`), errores y la reconstrucción de los fragmentos de la respuesta (`stream`).
+*   **Zod + Hook Form:** Implementación de validación estricta para evitar el envío de prompts vacíos o excesivamente largos.
+*   **CSS Grid:** Reestructuración del layout principal en `main.jsx` para integrar el componente de barra lateral (`ChatHistory`).
 
 ### 📝 Historial de Ramas
 - [x] **rama-1:** Setup inicial, Tailwind y UI con Hook Form.
-- [ ] **parte-2:** *(Próximamente)* Consumo de APIs y Ollama (useEffect).
+- [x] **parte-2:** Consumo de APIs y Ollama (useEffect / Custom Hook).
 - [ ] **parte-3:** *(Próximamente)* State Management (useContext).
 - [ ] **parte-4:** *(Próximamente)* Introducción a Backend (Teoría).
 - [ ] **parte-5:** *(Próximamente)* Servidor con Express.
@@ -31,7 +31,8 @@ Configurar el entorno inicial del proyecto y construir la interfaz básica del c
 
 ### 🚀 Cómo correr el proyecto en esta rama
 
-1. Clona el repositorio.
-2. Posiciónate en la rama: `git checkout rama-1`
-3. Instala las dependencias: `npm install`
-4. Levanta el servidor: `npm run dev`
+1. Asegúrate de tener [Ollama](https://ollama.com/) instalado y el modelo descargado (`ollama run deepseek-r1:1.5b`).
+2. Clona el repositorio.
+3. Posiciónate en la rama: `git checkout parte-2`
+4. Instala las dependencias: `npm install`
+5. Levanta el servidor: `npm run dev`
