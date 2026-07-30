@@ -1,9 +1,10 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SendHorizontal } from "lucide-react";
 import useOllamaHook from "./api/useOllamaHook";
+import { useContext } from "react";
+import { ChatContext } from "./context/global-context";
 
 const messageSchema = z.object({
   text: z
@@ -13,7 +14,8 @@ const messageSchema = z.object({
 });
 
 export default function App() {
-  const [messages, setMessages] = useState([]);
+  //const [messages, setMessages] = useState([]);
+  const { messages, setMessages } = useContext(ChatContext);
 
   const {
     handleSubmit: submitOllama,

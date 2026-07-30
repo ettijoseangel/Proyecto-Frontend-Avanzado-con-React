@@ -1,6 +1,9 @@
 import { NewChatIcon } from "./assets/new-chat-icon.jsx";
+import { useContext } from "react";
+import { ChatContext } from "./context/global-context";
 
 export default function History() {
+  const { historyList } = useContext(ChatContext);
   return (
     <div className="flex flex-col h-screen w-64 bg-gray-900 text-white p-4">
       <div className="flex flex-col items-start">
@@ -13,16 +16,14 @@ export default function History() {
         </div>
       </div>
       <div className="flex-1 overflow-y-auto mt-4 mb-4">
-        <ul className="space-y-2 text-sm mt-4">
-          <li>Búsqueda avanzada</li>
-          <li>¿Qué es React?</li>
-          <li>¿Qué es un componente?</li>
-          <li>¿Qué es un hook?</li>
-          <li>¿Qué es un estado?</li>
-          <li>¿Qué es un prop?</li>
-          <li>¿Qué es un evento?</li>
-          <li>¿Qué es un ciclo de vida?</li>
-        </ul>
+        {historyList.map((item, index) => (
+          <li
+            key={index}
+            className="p-2 hover:bg-gray-800 rounded-md cursor-pointer transition-colors"
+          >
+            {item}
+          </li>
+        ))}
       </div>
     </div>
   );
