@@ -1,8 +1,20 @@
-const express = require('express');
-const cors = require('cors');   // Importamos el middleware CORS
+const express = require("express");
+const cors = require("cors"); // Importamos el middleware CORS
+
+const low = require("lowdb"); // Importamos LowDB
+const FileSync = require("lowdb/adapters/FileSync"); // Importamos su adaptador de archivos sincrono
 
 const app = express();
 const PORT = 4000;
+
+// ==========================================
+// CONFIGURACIÓN DE LA BASE DE DATOS
+// ==========================================
+const adapter = new FileSync("db.json");
+const db = low(adapter);
+
+// Si el archivo db.json no existe, lo crea con un arreglo de mensajes vacio
+db.defaults({ messages: [] }).write();
 
 // ==========================================
 // MIDDLEWARES (Las aduanas de nuestra app)
@@ -15,76 +27,72 @@ app.use(cors());
 app.use(express.json());
 
 // ==========================================
-// ENDPOINTS (Nuestras rutas)
+// ENDPOINTS CRUD
 // ==========================================
 
-// GET: Hola Mundo
-app.get('/', (req, res) => {
-    res.send('Hola Mundo desde el backend del clon de ChatGPT');
+// 1. GET historial: Devuelve todo el historial guardado
+app.get("/api/messages", (req, res) => {
+  const messages = db.get("messages").value();
+  res.status(200).json(messages);
 });
 
-// POST: Recibir datos
-// app.post('/api/chat', (req, res) => {
-//     // Gracias a express.json(), podemos acceder directamente a req.body
-//     const mensajeUsuario = req.body.prompt;
+// 2. POST chat: Guarda el prompt, consulta a Ollama y guarda la respuesta
+app.post("/api/chat", async (req, res) => {
+  const { prompt } = req.body;
 
-//     // Validacion rapida
-//     if (!mensajeUsuario) {
-//         return res.status(400).json({ error: 'El prompt es requerido' });
-//     }
+  if (!prompt) {
+    return res.status(400).json({ error: "El prompt es requerido" });
+  }
 
-//     // Imprimimos en la consola del servidor los datos que llegaron
-//     console.log('Mensaje recibido:', mensajeUsuario);
+  // A. guardamos el mensaje del USUARIO
+  db.get("messages")
+  .push({ text: prompt, sender: 'user', timestamp: Date.now() })
+  .write();
 
-//     // Respondemos al cliente confirmando la recepcion
-//     res.status(200).json({
-//         status: 'exito',
-//         mensaje: `Backend dice: He recibido tu texto -> "${mensajeUsuario}"`
-//     });
-// });
+  console.log(`Consultando a DeepSeek R1... (Prompt: "${prompt}")`);
 
-// ENDPOINT RESTful
-app.post('/api/chat', async (req, res) => {
-    const { prompt } = req.body;
-
-    if (!prompt) {
-        return res.status(400).json({ error: 'El prompt es requerido' });
-    }
-    console.log(`Consultando a DeepSeek R1... (Prompt: "${prompt}")`);
-
-    try {
-        // 1. El backend hace la llamada a la IA local (Ollama)
-        const ollamaResponse = await fetch('http://localhost:11434/api/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                model: 'deepseek-r1:1.5b',
-                prompt: prompt,
-                stream: false // Esperamos a que piense toda la respuesta
-            })
-        });
-
-    if (!ollamaResponse.ok) {
-        throw new Error('Ha fallado la conexión con Ollama');
-    }
-
-    // 2. Extraemos el JSON que nos da Ollama
-    const data = await ollamaResponse.json();
-    console.log('Respuesta generada exitosamente.');
-
-    // 3. Formateamos la respuesta y se la enviamos a React
-    res.status(200).json({
-        response: data.response
+  try {
+    const ollamaResponse = await fetch('http://localhost:11434/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            model: 'deepseek-r1:1.5b',
+            prompt: prompt,
+            stream: false
+        })
     });
 
-    } catch (error) {
-        console.error('Error en el servidor:', error.message);
-        res.status(500).json({ error: 'Hubo un problema procesando la solicitud a la IA' });
-    }
+    if (!ollamaResponse.ok) throw new Error('Falló la conexión con Ollama');
+    
+    const data = await ollamaResponse.json();
+    const aiText = data.response;
+
+    // B. Guardamos la respuesta de la IA
+    db.get('messages')
+    .push({ text: aiText, sender: 'bot', timestamp: Date.now() })
+    .write();
+
+    console.log('Respuesta guardada en bd.json y enviada al cliente');
+
+    res.status(200).json({ response: aiText });
+
+  } catch (error) {
+    console.error('Error en el servidor:', error.message);
+    res.status(500).json({ error: 'Error procesando la IA' });
+  }
 });
 
+// 3. DELETE chat: Limpia el arreglo de mensajes
+app.delete('/api/messages', (req, res) => {
+    db.set('messages', []).write();
+    res.status(200).json({ status: 'Historial borrado con éxito' });
+});
 
-// Iniciamos el servidor
+// ==========================================
+// INICIO DEL SERVIDOR
+// ==========================================
 app.listen(PORT, () => {
-    console.log(`Servidor Express corriendo exitosamente en http://localhost:${PORT}`);
+  console.log(
+    `Servidor Express corriendo exitosamente en http://localhost:${PORT}`,
+  );
 });

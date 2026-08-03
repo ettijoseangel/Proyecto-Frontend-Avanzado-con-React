@@ -4,15 +4,17 @@ Este repositorio contiene el desarrollo paso a paso de un clon de ChatGPT, desde
 
 ---
 
-## 📍 Estado Actual: Parte 6 - API REST (parte-6)
+## 📍 Estado Actual: Parte 7 - CRUD Básico con LowDB (parte-7)
 
 ### 🎯 Objetivo de esta fase
-Trasladar la lógica de consumo de la Inteligencia Artificial al lado del servidor para ocultar la implementación y mejorar la seguridad, dejando al frontend únicamente como una capa de presentación.
+Implementar persistencia de datos utilizando una base de datos ligera basada en JSON (LowDB). Desarrollar las operaciones fundamentales (CRUD) en el servidor para almacenar, recuperar y eliminar el historial de chat, conectando estos endpoints con la interfaz de React.
 
 ### 🛠️ Tecnologías y Herramientas implementadas
-*   **API RESTful:** Creación de un endpoint intermedio en Express para procesar el *prompt* del usuario y gestionar la comunicación con servicios externos.
-*   **Fetch en Node.js:** Consumo del motor local de Ollama (modelo `deepseek-r1:1.5b`) directamente desde el backend.
-*   **Refactorización de Hooks:** Modificación del custom hook `useOllamaHook` en React para redirigir las peticiones hacia el puerto 4000 (Express) en lugar del puerto 11434 (Ollama), obteniendo la respuesta en un solo bloque (sin streaming).
+*   **LowDB:** Configuración del adaptador `FileSync` para gestionar un archivo `db.json` local como base de datos.
+*   **Operaciones CRUD:**
+    *   **Read (GET):** Endpoint `/api/messages` para cargar el historial persistente al inicializar la aplicación.
+    *   **Create (POST):** Modificación del endpoint `/api/chat` para registrar secuencialmente el prompt del usuario y la respuesta de DeepSeek R1 en el almacenamiento local.
+    *   **Delete (DELETE):** Creación de un endpoint para truncar la base de datos y limpiar la interfaz gráfica desde la barra lateral.
 
 ### 📝 Historial de Ramas
 - [x] **rama-1:** Setup inicial, Tailwind y UI con Hook Form.
@@ -21,5 +23,5 @@ Trasladar la lógica de consumo de la Inteligencia Artificial al lado del servid
 - [x] **parte-4:** Introducción a Backend (Servidor Express 'Hola Mundo').
 - [x] **parte-5:** Endpoints en Express y Middlewares.
 - [x] **parte-6:** API REST y consumo de IA en el Back.
-- [ ] **parte-7:** *(Próximamente)* CRUD Básico (Lowdb).
+- [x] **parte-7:** CRUD Básico (Lowdb).
 - [ ] **parte-8:** *(Próximamente)* Base de datos con MongoDB y Dotenv.

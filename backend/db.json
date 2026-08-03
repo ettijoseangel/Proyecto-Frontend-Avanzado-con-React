@@ -1,0 +1,14 @@
+{
+  "messages": [
+    {
+      "text": "Qué es React?",
+      "sender": "user",
+      "timestamp": 1785718902244
+    },
+    {
+      "text": "**React** es una herramienta popular y sencilla paradevelope web-based aplicaciones. Dada su simplicidad, puede usarse por anyone, incluyendo principiantes.\n\n### Características Principales de React:\n\n1. **Simplicidad**: React ha sido diseñada con la mente de los usuarios en mind, con un lenguaje básico simple que es similar a JavaScript.\n2. **Dividir y Componer**: React enablea al usuario descomponer un applying (un sistema completo) en secciones individuales, lo que facilita el desarrollo de código compuesto.\n3. **Componentes Base**:\n   - **App**: Un applying básico, como un graphitmo o una página web simple.\n   - **Elemento**: Es la estructura básica para organizar componentes del applying.\n4. **Event Handling**: React handle easily los eventos que se pueden realizar en el applying.\n5. **JavaScript y TypeScript**: La base de datos principal es JavaScript y TypeScript, lo que facilita su integración con otros lenguajes de programmación.\n\n### Types de aplicaciones de React:\n\n1. **Básicos**:\n   - Aplicaciones que manejen eventos (símbos como <button>, <input>).\n   - Aplicaciones que manejen tablas o secciones.\n\n2. **Advanced**:\n   - Aplicaciones con componentes react-markdown para typeahead de texto.\n   - Aplicaciones microapplets, que son aplicaciones pequeñas y específicas.\n\n3. **Educativa**: React es una herramienta ampliamente utilizada en el ámbito educativo para desarrollar applets interactivos.\n\n### Ejemplos Basicos de React:\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n    <script src=\"https://unpkg.com/react-dom@2\"; defer);\n</head>\n<body>\n    <div id=\"app\"></div>\n\n    <script>\n        const App = document.getElementById('app');\n        let state = { id: 1 };\n        \n        function updateState() {\n            state.id = state.id + 1;\n        }\n\n        updateState();\n    </script>\n</body>\n</html>\n```\n\n### Herramientas Adyacentes:\n\n- **TypeScript**: La lenguaje base para React.\n- **XSS Protection**: Para evitar que el applying se modifiquee de manera segura en computers secundarios.\n- **Bash**: Para ejecutar scripts en la terminal, si es un aplicación web que tiene errores.\n\nReconozcan que React es un entorno sencillo y extensible para crear aplicaciones basadas en JavaScript con una lógica simplicity shea.",
+      "sender": "bot",
+      "timestamp": 1785718910211
+    }
+  ]
+}

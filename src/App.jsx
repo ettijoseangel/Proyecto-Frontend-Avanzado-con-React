@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SendHorizontal } from "lucide-react";
 import useOllamaHook from "./api/useOllamaHook";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ChatContext } from "./context/global-context";
 
 const messageSchema = z.object({
@@ -14,15 +14,8 @@ const messageSchema = z.object({
 });
 
 export default function App() {
-  //const [messages, setMessages] = useState([]);
+  const { handleSubmit: submitOllama, response, loading, error } = useOllamaHook();
   const { messages, setMessages } = useContext(ChatContext);
-
-  const {
-    handleSubmit: submitOllama,
-    response,
-    loading,
-    error,
-  } = useOllamaHook();
 
   const {
     register,
@@ -32,6 +25,20 @@ export default function App() {
   } = useForm({
     resolver: zodResolver(messageSchema),
   });
+
+
+  // Recuperar historial de LowDB al montar el componente
+  useEffect(() => {
+    fetch('http://localhost:4000/api/messages')
+    .then((res) => res.json())
+    .then((data) => {
+      //Solo actualizamos si hay mensajes guardados
+      if (data && data.length > 0) {
+        setMessages(data);
+      }
+    })
+    .catch((err) => console.error("Error cargando el historial:", err));
+  }, [setMessages]);
 
   const onSubmit = (data) => {
     // Actualizamos el historial de mensajes antes de llamar a la IA

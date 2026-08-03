@@ -3,15 +3,31 @@ import { useContext } from "react";
 import { ChatContext } from "./context/global-context";
 
 export default function History() {
-  const { historyList } = useContext(ChatContext);
+  // Extraemos setMessages para poder limpiar la pantalla tambien
+  const { historyList, setMessages } = useContext(ChatContext);
+  // Funcion para borrar la base de datos y la pantalla
+  const handleNewChat = async () => {
+    try {
+      await fetch("http://localhost:4000/api/messages", {
+        method: "DELETE",
+      });
+      // Limpiamos el estado global de React
+      setMessages([]);
+    } catch (error) {
+      console.error("Error al borrar el historial:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen w-64 bg-gray-900 text-white p-4">
       <div className="flex flex-col items-start">
-        <span className="mb-4">Logo</span>
+        <span className="mb-4">ClonGPT</span>
         <div className="p-1 mt-4">
-          <button className="flex p-2 bg-blue-600 rounded-lg w-full">
+          <button
+            onClick={handleNewChat}
+            className="mt-4 w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-600 rounded shadow transition-colors"
+          >
             <NewChatIcon />
-            Nuevo chat
           </button>
         </div>
       </div>
