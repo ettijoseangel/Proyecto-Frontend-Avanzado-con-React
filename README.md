@@ -1,20 +1,19 @@
 # 🤖 ChatGPT Clone (Frontend & Backend Course)
 
-Este repositorio contiene el desarrollo paso a paso de un clon de ChatGPT, desde el frontend con React hasta el backend con Express, bases de datos y consumo de Inteligencia Artificial local.
+Este repositorio contiene el desarrollo paso a paso de un clon de ChatGPT, desde el frontend con React hasta el backend con Express, bases de datos en la nube y consumo de Inteligencia Artificial local.
 
 ---
 
-## 📍 Estado Actual: Parte 7 - CRUD Básico con LowDB (parte-7)
+## 📍 Estado Actual: Parte 8 - Integración con MongoDB (parte-8)
 
 ### 🎯 Objetivo de esta fase
-Implementar persistencia de datos utilizando una base de datos ligera basada en JSON (LowDB). Desarrollar las operaciones fundamentales (CRUD) en el servidor para almacenar, recuperar y eliminar el historial de chat, conectando estos endpoints con la interfaz de React.
+Reemplazar el almacenamiento local (JSON) por un motor de base de datos NoSQL profesional en la nube. Configurar la seguridad del servidor ocultando credenciales e implementar operaciones con Mongoose para manejar los documentos del chat.
 
 ### 🛠️ Tecnologías y Herramientas implementadas
-*   **LowDB:** Configuración del adaptador `FileSync` para gestionar un archivo `db.json` local como base de datos.
-*   **Operaciones CRUD:**
-    *   **Read (GET):** Endpoint `/api/messages` para cargar el historial persistente al inicializar la aplicación.
-    *   **Create (POST):** Modificación del endpoint `/api/chat` para registrar secuencialmente el prompt del usuario y la respuesta de DeepSeek R1 en el almacenamiento local.
-    *   **Delete (DELETE):** Creación de un endpoint para truncar la base de datos y limpiar la interfaz gráfica desde la barra lateral.
+*   **MongoDB Atlas:** Despliegue de un clúster de base de datos en la nube para el almacenamiento persistente y escalable del historial de chat.
+*   **Mongoose (ODM):** Modelado de datos estructurado mediante esquemas (`Schema`) para definir la forma de los documentos (`text`, `sender`, `timestamp`).
+*   **Dotenv:** Implementación de variables de entorno (`.env`) para mantener seguras las cadenas de conexión y configuraciones sensibles del servidor.
+*   **Resolución de DNS:** Configuración de cadenas de conexión clásicas para hacer *bypass* a bloqueos de registros SRV por parte de ISPs.
 
 ### 📝 Historial de Ramas
 - [x] **rama-1:** Setup inicial, Tailwind y UI con Hook Form.
@@ -24,4 +23,15 @@ Implementar persistencia de datos utilizando una base de datos ligera basada en 
 - [x] **parte-5:** Endpoints en Express y Middlewares.
 - [x] **parte-6:** API REST y consumo de IA en el Back.
 - [x] **parte-7:** CRUD Básico (Lowdb).
-- [ ] **parte-8:** *(Próximamente)* Base de datos con MongoDB y Dotenv.
+- [x] **parte-8:** Base de datos en la nube con MongoDB y Dotenv.
+
+---
+
+### 🚀 Cómo ejecutar este proyecto completo
+
+1. Clona el repositorio e instala las dependencias tanto en la raíz como en la carpeta `/backend`.
+2. Renombra el archivo `/backend/.env.example` a `.env` y coloca tu propia cadena de conexión de MongoDB.
+3. Asegúrate de tener **Ollama** corriendo localmente con el modelo `deepseek-r1:1.5b`.
+4. Abre dos terminales:
+   - Terminal 1 (Raíz): Ejecuta `npm run dev` para levantar el frontend de React (puerto 3000).
+   - Terminal 2 (Backend): Ejecuta `node index.js` para levantar el servidor Express (puerto 4000).
